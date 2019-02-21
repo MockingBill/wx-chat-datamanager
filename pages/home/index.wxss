@@ -20,7 +20,8 @@
 }
 
 .button-style {
-  margin-top: 11rpx;
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
   font-size: 38rpx;
   height: 80rpx;
   display: flex;
@@ -31,13 +32,18 @@
 .btn_hover{
   box-shadow:0px 0px 20px #333333;
 }
-
-
 .input-style {
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
   background-color: #fff;
-  width: 500rpx;
+  width: 540rpx;
+  height: 80rpx;
   margin-right: 10rpx;
   margin-left: 30rpx;
+}
+.placeholder-style{
+  margin-left: 60rpx;
+  font-size: 38rpx;
 }
 
 .logo_ground {
@@ -136,8 +142,13 @@
 
 .bottom_input {
   background-color: #e7e7e7;
-  border: 3rpx solid #e7e7e7;
+  right: 1rpx;
+  border-top: 3rpx solid #b4aeae;
+  border-bottom: 3rpx solid #b4aeae;
 
+}
+.scroll-view-styless{
+  background-color: #eeeeee70
 }
 
 /*  重写 radio 样式  */
@@ -171,10 +182,8 @@ radio .wx-radio-input.wx-radio-input-checked::before {
   transform: translate(-50%, -50%) scale(1);
   -webkit-transform: translate(-50%, -50%) scale(1);
 }
-.scroll-view-style{
-  height: 80%;
-}
+/*反馈点的样式*/
 .radio-style{
-  margin-top: 50rpx;
+  margin-top: 26rpx;
   margin-left: -10rpx;
 }

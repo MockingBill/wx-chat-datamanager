@@ -14,9 +14,13 @@ exports.default = Page({
     isgood: [{
       name: "no",
       value: "回答不满意"
-    }]
+    }],
+    boxHeight:900
   },
   onLoad:function(){
+    this.setData({
+      boxHeight: wx.getSystemInfoSync().windowHeight - 40
+    });
     if (app.globalData.userInfo.avatarUrl){
       this.setData({
         B_portrait: app.globalData.userInfo.avatarUrl

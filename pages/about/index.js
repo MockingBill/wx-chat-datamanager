@@ -14,6 +14,7 @@ Page({
     user_phone_number: "",
     vercode:"",
     relvercode: "123456",
+    ver_width:"220px",
     effectNumber: [
       "18785185684",
       "13595101082",
@@ -27,12 +28,23 @@ Page({
     })
   },
   onLoad: function() {
-    console.log(app.globalData.userInfo);
-    console.log(app.globalData.userphonenumber);
-    if (app.globalData.userInfo && app.globalData.userphonenumber) {
+    var query = wx.createSelectorQuery();
+    var that=this;
+    query.select(".weui-label").boundingClientRect(function (rect) {
+      that.setData({
+        ver_width: wx.getSystemInfoSync().windowWidth-rect.width-29 + 'px'
+      })
+    }).exec();
+
+
+    if (wx.getStorageSync("userinfo") && wx.getStorageSync("userphone")) {
+      app.globalData.userInfo = wx.getStorageSync("userinfo");
+      app.globalData.phonenumber = wx.getStorageSync("userphone");
+
+
       this.setData({
-        userInfo: app.globalData.userInfo,
-        user_phone_number: app.globalData.userphonenumber,
+        userInfo: wx.getStorageSync("userinfo"),
+        user_phone_number: wx.getStorageSync("userphone"),
         hasUserInfo: true
       })
       wx.navigateTo({
@@ -62,11 +74,24 @@ Page({
       })
     }
   },
+  openAlert: function (alertMess) {
+    wx.showModal({
+      content: alertMess,
+      showCancel: false,
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        }
+      }
+    });
+  },
   getUserInfo: function(e) {
     if(this.data.relvercode==this.data.vercode){
       app.globalData.userInfo = e.detail.userInfo;
-      app.globalData.userphonenumber=this.user_phone_number;
-      console.log(app.globalData.userInfo);
+      app.globalData.userphonenumber=this.data.user_phone_number;
+      wx.setStorageSync("userinfo", e.detail.userInfo)
+      wx.setStorageSync("userphone", this.data.user_phone_number)
+     
       this.setData({
         userInfo: e.detail.userInfo,
         hasUserInfo: true
@@ -75,7 +100,7 @@ Page({
         url: '../home/index'
       });
     }else{
-      /*验证码输入错误*/
+      this.openAlert("验证码输入错误,本小程序处于体验阶段。在验证码处输入123456作为测试验证码。");
     }
   },
   checkPhoneNumber: function(number) {
@@ -117,7 +142,7 @@ Page({
         }, 1000);
       } else { }
     }else{
-      /*弹窗不合法手机号 */
+      this.openAlert("手机号不合法或不在允许的通讯录中,请联系管理员处理。");
     }
   },
   bindKeyInput: function(e) {

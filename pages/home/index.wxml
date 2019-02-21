@@ -1,5 +1,5 @@
 
-        <scroll-view scroll-y="true" class="scroll-view-style">
+        <scroll-view scroll-y="true" style='height:{{boxHeight}}px' class='scroll-view-styless'>
             <wxc-flex class="wrap" _pid="{{_pid}}">
                 <wxc-avatar class="avatar item side" src="{{A_portrait}}" _pid="{{_pid}}">
                 </wxc-avatar>
@@ -28,11 +28,10 @@
 
               </view>
               </wxc-flex>
-              
         </scroll-view>
 
         <view class="in-region bottom_input">
-            <wxc-input class="input-style" type="text" name="usermessage"   mode="wrapped" value="{{inputValue}}" placeholder="请输入您的问题" bindinput="bindKeyInput" _pid="{{_pid}}"></wxc-input>
+            <input class="input-style" type="text" name="usermessage"   mode="wrapped" value="{{inputValue}}" placeholder="请输入您的问题" placeholder-class='placeholder-style' bindinput="bindKeyInput" _pid="{{_pid}}"></input>
 
             <button class="button-style" hover-class="btn_hover" type="primary" plain="true" bindtap="sendMess" _pid="{{_pid}}">发送</button>
         </view>

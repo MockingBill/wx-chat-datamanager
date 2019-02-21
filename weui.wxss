@@ -79,7 +79,6 @@ icon {
   top: 0;
   right: 0;
   height: 1px;
-  border-top: 1rpx solid #d9d9d9;
   color: #d9d9d9;
   left: 15px;
 }
@@ -418,9 +417,10 @@ icon {
   padding: 0 0.6em 0 0.7em;
   border-left: 1px solid #e5e5e5;
   line-height: 2.58823529em;
-  font-size: 40rpx;
+  font-size: 30rpx;
   color: #1f83c593;
   white-space: nowrap;
+  width: 60px;
 }
 
 .weui-vcode-btn:active {

@@ -7,7 +7,7 @@
     "backgroundTextStyle": "dark",
     "backgroundColor": "#efefef",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "微信数据管家",
+    "navigationBarTitleText": "网络数据管家",
     "navigationBarTextStyle": "black"
   },
   "networkTimeout": {
