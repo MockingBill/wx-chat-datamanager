@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "wxc-badge": "../packages/@minui/wxc-badge/src/index",
+    "wxc-cc": "../packages/@minui/wxc-cc/src/index"
+  },
+  "component": true
+}

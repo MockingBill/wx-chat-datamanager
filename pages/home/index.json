@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "wxc-avatar": "../../packages/@minui/wxc-avatar/dist/index",
+    "wxc-label": "../../packages/@minui/wxc-label/dist/index",
+    "wxc-icon": "../../packages/@minui/wxc-icon/dist/index",
+    "wxc-flex": "../../packages/@minui/wxc-flex/dist/index",
+    "wxc-input": "../../packages/@minui/wxc-input/dist/index",
+    "wxc-button": "../../packages/@minui/wxc-button/dist/index"
+  }
+}

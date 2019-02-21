@@ -1,0 +1,30 @@
+<!--index.wxml-->
+<view class="container">
+  <open-data type="userAvatarUrl" class="userinfo-avatar-top"></open-data>
+  <open-data type="userNickName" class="userinfo-nickname"></open-data>
+  
+  <view class="weui-cell weui-cell_input weui-cell_vcode phoneNumber_style">
+    <view class="weui-cell__hd">
+      <view class="weui-label">手机号</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入手机号" bindinput="bindKeyInput" />
+    </view>
+    <view class="weui-cell__ft">
+      <view disabled='{{disabled}}' class="weui-vcode-btn" bindtap='getVerCode'>{{count_down}}{{sign}}</view>
+    </view>
+  </view>
+  <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">验证码</view>
+      </view>
+      <view class="weui-cell__bd">
+        <input class="weui-input verstyle" bindinput='bindVarInput' placeholder="请输入验证码" />
+      </view>
+    </view>
+  </view>
+  <view class="userinfo">
+    <button  open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 登录 </button>
+  </view>
+</view>

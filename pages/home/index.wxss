@@ -1,0 +1,180 @@
+.index-hd {
+  padding: 70 rpx;
+  text-align: center;
+}
+
+.index-bd {
+  padding: 20 rpx 30 rpx;
+  margin: 20 rpx 0;
+  background-color: cadetblue;
+  color: #fff;
+  text-align: center;
+}
+
+.in-region {
+  width: 100%;
+  position: fixed;
+  bottom: 0rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.button-style {
+  margin-top: 11rpx;
+  font-size: 38rpx;
+  height: 80rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btn_hover{
+  box-shadow:0px 0px 20px #333333;
+}
+
+
+.input-style {
+  background-color: #fff;
+  width: 500rpx;
+  margin-right: 10rpx;
+  margin-left: 30rpx;
+}
+
+.logo_ground {
+  position: fixed;
+  width: 100%;
+  height: 50rpx;
+  bottom: 0rpx;
+  background-color: blueviolet;
+  z-index: -1;
+}
+
+.index-logo {
+  width: 100 rpx;
+  height: 100 rpx;
+}
+
+.index-desc {
+  margin-top: 20 rpx;
+  color: #888;
+  font-size: 28 rpx;
+}
+
+.avatar {
+  display: block;
+  width: 90 rpx;
+  height: 90 rpx;
+}
+
+.wrap {
+  display: block;
+  margin: 50rpx;
+}
+
+.item {
+  font-size: 10rpx;
+  line-height: 50rpx;
+  text-align: center;
+}
+
+.side {
+  width: 100rpx;
+  height: 100rpx;
+  flex-grow: 0;
+}
+
+.text-left {
+  width: 100rpx;
+  flex-grow: 1;
+  font-size: 30rpx;
+  text-align: left;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20rpx;
+  border: 3rpx solid #6ee768;
+  /*圆角设置*/
+  background: #6ee768;
+  border-radius: 30rpx;
+  padding: 30rpx;
+  box-shadow: -3rpx 4rpx 20rpx #333;
+}
+
+.text-left:before {
+  content: "";
+  position: absolute;
+  left: 145rpx;
+  border-top: 17rpx solid transparent;
+  border-bottom: 17rpx solid transparent;
+  border-right: 30rpx solid #6ee768;
+}
+
+.text-right {
+  width: 100rpx;
+  flex-grow: 1;
+  font-size: 30rpx;
+  text-align: right;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 20rpx;
+  border: 3rpx solid #6ee768;
+  /*圆角设置*/
+  background: #6ee768;
+  border-radius: 30rpx;
+  padding: 30rpx;
+  box-shadow: 2px 2px 5px #333;
+  position: relative;
+}
+
+.text-right:before {
+  content: "";
+  position: absolute;
+  left: 530rpx;
+  border-top: 17rpx solid transparent;
+  border-bottom: 17rpx solid transparent;
+  border-left: 30rpx solid #6ee768;
+}
+
+.bottom_input {
+  background-color: #e7e7e7;
+  border: 3rpx solid #e7e7e7;
+
+}
+
+/*  重写 radio 样式  */
+
+/* 未选中的 背景样式 */
+
+radio .wx-radio-input {
+  border-radius: 50%; /* 圆角 */
+  width: 35rpx;
+  height: 35rpx;
+}
+
+/* 选中后的 背景样式 （红色背景 无边框 可根据UI需求自己修改） */
+
+radio .wx-radio-input.wx-radio-input-checked {
+  border: none;
+  background: red;
+}
+
+/* 选中后的 对勾样式 （白色对勾 可根据UI需求自己修改） */
+
+radio .wx-radio-input.wx-radio-input-checked::before {
+  border-radius: 50%; /* 圆角 */
+  width: 40rpx; /* 选中后对勾大小，不要超过背景的尺寸 */
+  height: 40rpx; /* 选中后对勾大小，不要超过背景的尺寸 */
+  line-height: 40rpx;
+  text-align: center;
+  font-size: 30rpx; /* 对勾大小 30rpx */
+  color: #fff; /* 对勾颜色 白色 */
+  background: transparent;
+  transform: translate(-50%, -50%) scale(1);
+  -webkit-transform: translate(-50%, -50%) scale(1);
+}
+.scroll-view-style{
+  height: 80%;
+}
+.radio-style{
+  margin-top: 50rpx;
+  margin-left: -10rpx;
+}
