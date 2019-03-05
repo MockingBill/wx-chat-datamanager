@@ -15,18 +15,19 @@ exports.default = Page({
       name: "no",
       value: "回答不满意"
     }],
-    boxHeight:900
+    boxHeight: 900
   },
-  onLoad:function(){
+  onLoad: function() {
+    /*加载页面执行*/
     this.setData({
       boxHeight: wx.getSystemInfoSync().windowHeight - 40
     });
-    if (app.globalData.userInfo.avatarUrl){
+    if (app.globalData.userInfo.avatarUrl) {
       this.setData({
         B_portrait: app.globalData.userInfo.avatarUrl
       });
     }
-    
+
   },
   genuuid: function() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -36,16 +37,24 @@ exports.default = Page({
     });
   },
   sendMess: function(e) {
-    var that=this;
+    /* 局部化this变量 */
+    var that = this;
+    /* 获取输入内容 */
     var fromMessage = this.data.inputValue;
+    /* 获取消息列表 */
     var chatMess = this.data.messArray;
-    if (fromMessage=="clc"){
+    /* 引入加密包 */
+    var Dec = require('../../utils/cryptojs/cryptojs.js');
+    /* 引入token生成器 */
+    var getTimeToken = require("../../utils/cryptojs/cryptojs.js").getTimeToken;
+    /* 清屏 */
+    if (fromMessage == "clc") {
       this.setData({
-        messArray:[],
+        messArray: [],
         inputValue: ""
       });
-
-    }else{
+    } else {
+      /* 验证合法的输入 */
       if (fromMessage != "" && fromMessage != undefined && fromMessage != null) {
         var uuid = this.genuuid();
         chatMess.push({
@@ -57,37 +66,125 @@ exports.default = Page({
           messArray: chatMess,
           inputValue: ""
         });
-
-        var url = "https://www.tuling123.com/openapi/api?key=7b2bc86486694cadba936235daa047f7&info=";
-        url = url + fromMessage;
+        /* 声明请求包 */
+        var postData = {
+          from_mess: Dec.Encrypt(fromMessage),
+          auth_token: Dec.Encrypt(getTimeToken())
+        }
+        /* 请求数据接口 */
+        var url = "http://10.196.135.137:18081/answer"
         wx.request({
           url: url,
-          success(res){
-            chatMess.push({
-              QorA: "A",
-              message: res.data.text,
-              mess_id: uuid + "-A"
-            });
-            that.setData({
-              messArray: chatMess
-            });
+          dataType: "json",
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          method: "POST",
+          data: postData,
+          success(res) {
+            /* 响应码正常 */
+            if (res.statusCode == 200) {
+              var respmess = Dec.Decrypt(res.data.respMessage);
+              var auth_token = Dec.Decrypt(res.data.auth_token);
+              /* 令牌与回复消息正常 */
+              if (auth_token == getTimeToken() && respmess != "" && respmess != undefined && respmess != null) {
+                chatMess.push({
+                  QorA: "A",
+                  message: respmess,
+                  mess_id: uuid + "-A"
+                });
+                that.setData({
+                  messArray: chatMess
+                });
+              } else {
+                that.tulingReq(fromMessage,uuid);
+              }
+            } else {
+              that.tulingReq(fromMessage,uuid);
+            }
           }
         })
-
-        
+      }
+      else{
+        this.openAlert("输入不合法");
       }
     }
-    
   },
   bindKeyInput: function bindKeyInput(e) {
     this.setData({
       inputValue: e.detail.value
     });
   },
+  tulingReq: function(fromMessage,uuid) {
+    var chatMess = this.data.messArray;
+    var urltuling = "https://www.tuling123.com/openapi/api?key=7b2bc86486694cadba936235daa047f7&info=";
+    urltuling = urltuling + fromMessage;
+    var that=this;
+    wx.request({
+      url: urltuling,
+      success(res) {
+        chatMess.push({
+          QorA: "A",
+          message: res.data.text,
+          mess_id: uuid + "-A"
+        });
+        that.setData({
+          messArray: chatMess
+        });
+      }
+    })
+  },
   radioChange(e) {
+    /* 引入加密包 */
+    var Dec = require('../../utils/cryptojs/cryptojs.js');
+    /* 引入token生成器 */
+    var getTimeToken = require("../../utils/cryptojs/cryptojs.js").getTimeToken;
+
+
     /* 发送一个存储请求问答的 */
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    var messArray = this.data.messArray;
+    var postData={};
+    var that = this;
+    var key = e.detail.value;
+    key = key.substr(0, key.length - 1);
+    for(var i=0;i<messArray.length;i++){
+      var cumess=messArray[i]['mess_id'];
+      if (cumess.substr(0, cumess.length-1) ==key){
+        postData["QorA-"+messArray[i]["QorA"]] = Dec.Encrypt(messArray[i]["message"]);
+        postData['messid-' + messArray[i]["QorA"]] = Dec.Encrypt(messArray[i]["mess_id"]);
+        postData['auth_token'] = Dec.Encrypt(getTimeToken());
+      }
+    }  
+    console.log(postData);
+    var url = "http://10.196.135.137:18081/writeEvaluate"
+    wx.request({
+      url: url,
+      dataType: "json",
+      header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      method: "POST",
+      data: postData,
+      success(res) {
+        if (res.statusCode==200){
+          wx.showToast({
+            title: '反馈成功',
+            icon: 'succes',
+            duration: 500,
+            mask: true
+          });
+        }else{
+          wx.showToast({
+            title: '反馈失败',
+            icon: 'fail',
+            duration: 500,
+            mask: true
+          });
+        }
+      }
+      });
+
+
   }
 
 });
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4Lnd4cCJdLCJuYW1lcyI6WyJkYXRhIiwic2VuZE1lc3MiLCJlIiwiZnJvbU1lc3NhZ2UiLCJpbnB1dFZhbHVlIiwiY29uc29sZSIsImxvZyIsImJpbmRLZXlJbnB1dCIsInNldERhdGEiLCJkZXRhaWwiLCJ2YWx1ZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBV1FBLFVBQU07QUFBQTtBQUFBO0FBQUE7QUFBQSxLO0FBR05DLFksb0JBQVNDLEMsRUFBRTtBQUNQLFlBQUlDLGNBQVksS0FBS0gsSUFBTCxDQUFVSSxVQUExQjtBQUNBQyxnQkFBUUMsR0FBUixDQUFZSCxXQUFaO0FBRUgsSztBQUNESSxnQix3QkFBYUwsQyxFQUFHO0FBQ1osYUFBS00sT0FBTCxDQUFhO0FBQ1RKLHdCQUFZRixFQUFFTyxNQUFGLENBQVNDO0FBRFosU0FBYjtBQUdIIiwiZmlsZSI6ImluZGV4Lnd4cCIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IHtcbiAgICAgICAgY29uZmlnOiB7XG4gICAgICAgICAgICB1c2luZ0NvbXBvbmVudHM6IHtcbiAgICAgICAgICAgICAgICAnd3hjLWF2YXRhcic6ICdAbWludWkvd3hjLWF2YXRhcicsXG4gICAgICAgICAgICAgICAgJ3d4Yy1sYWJlbCc6ICdAbWludWkvd3hjLWxhYmVsJyxcbiAgICAgICAgICAgICAgICAnd3hjLWljb24nOiAnQG1pbnVpL3d4Yy1pY29uJyxcbiAgICAgICAgICAgICAgICAnd3hjLWZsZXgnOiAnQG1pbnVpL3d4Yy1mbGV4JyxcbiAgICAgICAgICAgICAgICAnd3hjLWlucHV0JzogJ0BtaW51aS93eGMtaW5wdXQnLFxuICAgICAgICAgICAgICAgICd3eGMtYnV0dG9uJzogJ0BtaW51aS93eGMtYnV0dG9uJyxcbiAgICAgICAgICAgIH1cbiAgICAgICAgfSxcbiAgICAgICAgZGF0YToge1xuXG4gICAgICAgIH0sXG4gICAgICAgIHNlbmRNZXNzKGUpe1xuICAgICAgICAgICAgbGV0IGZyb21NZXNzYWdlPXRoaXMuZGF0YS5pbnB1dFZhbHVlO1xuICAgICAgICAgICAgY29uc29sZS5sb2coZnJvbU1lc3NhZ2UpXG5cbiAgICAgICAgfSxcbiAgICAgICAgYmluZEtleUlucHV0KGUpIHtcbiAgICAgICAgICAgIHRoaXMuc2V0RGF0YSh7XG4gICAgICAgICAgICAgICAgaW5wdXRWYWx1ZTogZS5kZXRhaWwudmFsdWVcbiAgICAgICAgICAgIH0pXG4gICAgICAgIH0sXG5cbiAgICB9Il19

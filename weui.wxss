@@ -181,16 +181,17 @@ icon {
 }
 
 .weui-label {
-  width: 70px;
   word-wrap: break-word;
   word-break: break-all;
   font-size: 30rpx;
+  text-align: center;
 }
 
 .weui-input {
   height: 2.58823529em;
   min-height: 2.58823529em;
   line-height: 2.58823529em;
+  width: 400rpx;
 }
 
 .weui-toptips {
@@ -407,7 +408,6 @@ icon {
 }
 
 .weui-vcode-btn, .weui-vcode-img {
-  margin-left: 5px;
   height: 2.58823529em;
   vertical-align: middle;
 }
