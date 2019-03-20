@@ -1,38 +1,36 @@
-
-        <scroll-view scroll-y="true" style='height:{{boxHeight}}px' class='scroll-view-styless'>
-            <wxc-flex class="wrap" _pid="{{_pid}}">
-                <wxc-avatar class="avatar item side" src="{{A_portrait}}" _pid="{{_pid}}">
-                </wxc-avatar>
-                <text class="item text-left">你好啊，我是你的数据管家。</text>
-            </wxc-flex>
-
-
-            <wxc-flex class="wrap" _pid="{{_pid}}" wx:for="{{messArray}}" wx:for-item="messItem" wx:key="mess_id">
-                <!-- 右侧用户问题 -->
-                <view class="item text-right" wx:if="{{messItem.QorA=='Q'}}">
-                  <text>{{messItem.message}}</text>
-                </view>
-                <wxc-avatar class="avatar item side" wx:if="{{messItem.QorA=='Q'}}" src="{{B_portrait}}" _pid="{{_pid}}"></wxc-avatar>
-                <!-- 左侧机器人回答 -->
-              <wxc-avatar class="avatar item side" wx:if="{{messItem.QorA=='A'}}" src="{{A_portrait}}" _pid="{{_pid}}">
-              </wxc-avatar>
-              <view class="item text-left" wx:if="{{messItem.QorA=='A'}}">
-                <text>{{messItem.message}}
+<scroll-view scroll-y="true" style='height:{{boxHeight}}px' class='scroll-view-styless'>
+  <wxc-flex class="wrap" _pid="{{_pid}}">
+    <wxc-avatar class="avatar item side" src="{{A_portrait}}" _pid="{{_pid}}">
+    </wxc-avatar>
+    <text class="item text-left">您好啊，我是您的数据管家。你可以输入"帮助"来获取使用方法。</text>
+  </wxc-flex>
+  <wxc-flex class="wrap" _pid="{{_pid}}" wx:for="{{messArray}}" wx:for-item="messItem" wx:key="mess_id">
+    <!-- 右侧用户问题 -->
+    <view class="item text-right" wx:if="{{messItem.QorA=='Q'}}">
+      <text>{{messItem.message}}</text>
+    </view>
+    <wxc-avatar class="avatar item side" wx:if="{{messItem.QorA=='Q'}}" src="{{B_portrait}}" _pid="{{_pid}}"></wxc-avatar>
+    <!-- 左侧机器人回答 -->
+    <wxc-avatar class="avatar item side" wx:if="{{messItem.QorA=='A'}}" src="{{A_portrait}}" _pid="{{_pid}}">
+    </wxc-avatar>
+    <view class="item text-left" wx:if="{{messItem.QorA=='A'}}">
+      <text>{{messItem.message}}
               </text>
-              <radio-group class="radio-group radio-style" bindchange="radioChange">
-                  <label class="radio" wx:for="{{isgood}}" wx:key="{{name}}">
-                      <radio value="{{messItem.mess_id}}" checked="{{item.checked}}" />
-                          {{item.value}}
-                  </label>
-              </radio-group>
+      <radio-group class="radio-group radio-style" bindchange="radioChange" hidden="{{radioHidden}}">
+        <label class="radio" wx:for="{{isgood}}" wx:key="{{name}}">
+          <radio value="{{messItem.mess_id}}" checked="{{item.checked}}" /> {{item.value}}
+        </label>
+      </radio-group>
 
-              </view>
-              </wxc-flex>
-        </scroll-view>
+    </view>
+  </wxc-flex>
+  <!-- 反馈与建议 -->
+  <modal title="反馈与建议" confirm-text="提交反馈" cancel-text="放弃反馈" hidden="{{onoff}}" bindconfirm="modalConfirm" bindcancel="modalCancel">
+    <textarea class="advise" placeholder-class="plaAdvise" maxlength="300" bindinput="bindTextAreaBlur" placeholder="请输入您的建议"></textarea>
+  </modal>
+</scroll-view>
+<view class="in-region bottom_input">
+  <input class="input-style" type="text" name="usermessage" mode="wrapped" value="{{inputValue}}" placeholder="请输入您的问题" placeholder-class='placeholder-style' bindinput="bindKeyInput" _pid="{{_pid}}"></input>
 
-        <view class="in-region bottom_input">
-            <input class="input-style" type="text" name="usermessage"   mode="wrapped" value="{{inputValue}}" placeholder="请输入您的问题" placeholder-class='placeholder-style' bindinput="bindKeyInput" _pid="{{_pid}}"></input>
-
-            <button class="button-style" hover-class="btn_hover" type="primary" plain="true" bindtap="sendMess" _pid="{{_pid}}">发送</button>
-        </view>
-    
+  <button class="button-style" hover-class="btn_hover" type="primary" plain="true" bindtap="sendMess" _pid="{{_pid}}">发送</button>
+</view>

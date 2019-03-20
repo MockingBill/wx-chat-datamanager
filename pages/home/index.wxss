@@ -187,3 +187,15 @@ radio .wx-radio-input.wx-radio-input-checked::before {
   margin-top: 26rpx;
   margin-left: -10rpx;
 }
+.advise{
+  background-color: #F0F0F0;
+  height:600rpx;
+  width: 545rpx;
+  border-style: solid; 
+  border-color: #D8D8D8;
+  font-size: 18px;
+}
+.plaAdvise{
+  font-size: 18px;
+}
+

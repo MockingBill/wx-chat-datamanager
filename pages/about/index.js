@@ -1,20 +1,30 @@
 //index.js
 //获取应用实例
 const app = getApp()
+const Dec = require('../../utils/cryptojs/cryptojs.js');
+const getTimeToken = require("../../utils/cryptojs/cryptojs.js").getTimeToken;
+//验证码定时器
 var interval = null;
 Page({
   data: {
-    motto: 'Hello World',
+    //用户信息
     userInfo: {},
+    //是否存在用户信息
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    //读秒显示
     count_down: "获取验证码",
+    //读秒显示 时间单位
     sign: "",
+    //获取验证码能否被点击
     disabled: true,
-    vc_code:"6789",
-    user_phone_number: "",
+    //当前正确的验证码
+    vc_code:"111111",
+    //用户的邮箱
+    user_email: "",
+    //外在输入的验证码
     vercode:"",
-    ver_width:"220px",
+    //有效的邮箱
     effectEmail: [
       "gangzhouwei@gz.chinamobile.com",
       "dengqian1@gz.chinamobile.com",
@@ -259,39 +269,28 @@ Page({
       "liuyazhong@gz.chinamobile.com"
     ]
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
+  /**
+   * 页面开始的时候
+   */
   onLoad: function() {
-    var query = wx.createSelectorQuery();
     var that=this;
-    query.select(".weui-label").boundingClientRect(function (rect) {
-      that.setData({
-        ver_width: wx.getSystemInfoSync().windowWidth-rect.width-29 + 'px'
-      })
-    }).exec();
-
-
-    if (wx.getStorageSync("userinfo") && wx.getStorageSync("userphone")) {
-      app.globalData.userInfo = wx.getStorageSync("userinfo");
-      app.globalData.phonenumber = wx.getStorageSync("userphone");
-
-
+    //缓存中已经存在用户信息与邮箱地址则直接进入
+    var StorUserInfo = wx.getStorageSync("userinfo");
+    var StorUserEmail = wx.getStorageSync("useremail");
+    if (StorUserInfo && StorUserEmail) {
+      app.globalData.userInfo = StorUserInfo;
+      app.globalData.userEmail = StorUserEmail;
       this.setData({
-        userInfo: wx.getStorageSync("userinfo"),
-        user_phone_number: wx.getStorageSync("userphone"),
+        userInfo: StorUserInfo,
+        user_email: StorUserEmail,
         hasUserInfo: true
       })
+      //跳转
       wx.navigateTo({
         url: '../home/index'
       });
-
+    //获取用户信息
     } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
         console.log(res.userInfo);
         this.setData({
@@ -299,6 +298,7 @@ Page({
           hasUserInfo: true
         })
       }
+      //获取用户信息
     } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
@@ -312,40 +312,33 @@ Page({
       })
     }
   },
-  openAlert: function (alertMess) {
-    wx.showModal({
-      content: alertMess,
-      showCancel: false,
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        }
-      }
-    });
-  },
+  //获取用户信息调用与登录验证
   getUserInfozd: function(e) {
-    /* 引入加密包 */
-    var Dec = require('../../utils/cryptojs/cryptojs.js');
+   
+    //验证成功
     if (this.data.vercode&&this.data.vc_code && Dec.Decrypt(this.data.vc_code) == this.data.vercode){
-      app.globalData.userInfo = e.detail.userInfo;
-      app.globalData.userphonenumber=this.data.user_phone_number;
-      wx.setStorageSync("userinfo", e.detail.userInfo)
-      wx.setStorageSync("userphone", this.data.user_phone_number)
+      var cu_user_info = e.detail.userInfo;
+      var cu_user_email = this.data.user_email;
+
+      app.globalData.userInfo = cu_user_info;
+      app.globalData.userEmail = cu_user_email;
+      wx.setStorageSync("userinfo", cu_user_info)
+      wx.setStorageSync("useremail", cu_user_email)
       this.setData({
-        userInfo: e.detail.userInfo,
+        userInfo: cu_user_info,
         hasUserInfo: true
       })
-      if (wx.getStorageSync("userphone") && wx.getStorageSync("userphone")){
+      if (wx.getStorageSync("userinfo") && wx.getStorageSync("useremail")){
        wx.navigateTo({
          url: '../home/index'
        });
      }
     }else{
-      this.openAlert("验证信息错误！");
+      this.openAlert("验证信息错误或超时，请重新获取。");
     }
   },
-  checkPhoneNumber: function(email_add) { 
-
+  //检查邮箱是否在网络部
+  checkEmail: function(email_add) { 
     var allEmail = this.data.effectEmail;
     var flag=false;
     for (var i in allEmail){
@@ -356,20 +349,16 @@ Page({
     return flag;
   },
   getVerCode: function(e) {
-    var email=this.data.user_phone_number;
+    var email=this.data.user_email;
     email = email.replace(/\s+/g, "");
     email=email+"@gz.chinamobile.com";
-    /* 引入加密包 */
-    var Dec = require('../../utils/cryptojs/cryptojs.js');
-    /* 引入token生成器 */
-    var getTimeToken = require("../../utils/cryptojs/cryptojs.js").getTimeToken;
-   console.log(email);
     /* 判断手机合法性与安全性  */
-    if (this.checkPhoneNumber(email)) {
+    if (this.checkEmail(email)) {
       /*防止重复发送验证码 */
       if (this.data.count_down == "获取验证码" || this.data.count_down == "重新获取") {
         var cuTime = 60;
         var that = this;
+        //读秒轮循任务
         interval = setInterval(function () {
           if (cuTime <= 0) {
             that.setData({
@@ -394,8 +383,7 @@ Page({
           email_address: Dec.Encrypt(email),
           auth_token: Dec.Encrypt(getTimeToken())
         }
-
-        var url = "http://10.196.135.137:18081/sendEmail"
+        var url = app.globalData.remoteUrl +"sendEmail"
         wx.request({
           url: url,
           dataType: "json",
@@ -407,6 +395,7 @@ Page({
           success(res) {
             if (res.data.result == 1) {
               that.setData({
+                //复制到真实验证码
                 vc_code: res.data.vc
               })
               
@@ -426,20 +415,25 @@ Page({
             }
           }
         });
-
-
       } else { 
-          /*重复获取的分支进入*/
+        wx.showLoading({
+          title: '请稍后再试',
+        });
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 2000);
       }
     }else{
       this.openAlert("邮箱不合法或不在允许的通讯录中,请联系管理员处理。");
     }
   },
+  //邮箱输入双向绑定
   bindKeyInput: function(e) {
     this.setData({
-      user_phone_number: e.detail.value
+      user_email: e.detail.value
     });
   },
+  //验证码输入双向绑定
   bindVarInput: function (e) {
     this.setData({
       vercode: e.detail.value

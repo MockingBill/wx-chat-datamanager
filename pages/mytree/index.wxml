@@ -1,0 +1,6 @@
+<view wx:for='{{major}}' wx:for-item="majoritem" wx:key="index">
+  <text class="title" bindtap='flod' data-id='{{index}}'>{{index+1}}.{{majoritem.index_name}}</text>
+  <view class="{{majoritem.flodFlag?'is-none':''}}">
+    <rich-text nodes="{{majoritem.nodes}}"></rich-text>
+  </view>
+</view>

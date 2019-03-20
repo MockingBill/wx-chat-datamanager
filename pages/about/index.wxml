@@ -1,26 +1,25 @@
-<!--index.wxml-->
 <view class="container">
   <open-data type="userAvatarUrl" class="userinfo-avatar-top"></open-data>
   <open-data type="userNickName" class="userinfo-nickname"></open-data>
 
   <view class="weui-cell weui-cell_input weui-cell_vcode phone_style">
     <view class="weui-cell__hd">
-      <view class="weui-label" style='width:130rpx' >邮箱</view>
+      <view class="weui-label" style='width:130rpx'>邮箱</view>
     </view>
     <view class="weui-cell__bd">
-      <input style='width:280rpx'  class="weui-input" placeholder="请输入企业邮箱前缀" placeholder-class='placeholder-style' bindinput="bindKeyInput" />
+      <input style='width:280rpx' class="weui-input" placeholder="请输入企业邮箱前缀" placeholder-class='placeholder-style' bindinput="bindKeyInput" />
     </view>
     <view>
-      <view  style='width:280rpx' class="weui-vcode-btn">@gz.chinamobile.com</view>
+      <view style='width:280rpx' class="weui-vcode-btn">@gz.chinamobile.com</view>
     </view>
-    
+
   </view>
   <view class="weui-cell weui-cell_input weui-cells_after-title ver_style">
     <view class="weui-cell__hd">
       <view class="weui-label" style='width:130rpx'>验证码</view>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input"   bindinput='bindVarInput' placeholder-class='placeholder-style' placeholder="请输入验证码" />
+      <input class="weui-input" bindinput='bindVarInput' placeholder-class='placeholder-style' placeholder="请输入验证码" />
     </view>
     <view class="weui-cell__ft">
       <view disabled='{{disabled}}' class="weui-vcode-btn" bindtap='getVerCode'>{{count_down}}{{sign}}</view>

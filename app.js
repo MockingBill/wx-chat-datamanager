@@ -1,12 +1,11 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = App({
-  globalData: {},
+  globalData: {
+    //"remoteUrl": "https://www.illidan.club:5591/"
+    "remoteUrl": "http://10.196.135.137:18081/",
+    userInfo:{},
+    userEmail:"",
+  },
   onLaunch: function onLaunch() {},
   onShow: function onShow() {},
   onHide: function onHide() {}
 });
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC53eGEiXSwibmFtZXMiOlsiZ2xvYmFsRGF0YSIsIm9uTGF1bmNoIiwib25TaG93Iiwib25IaWRlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFjSUEsY0FBWSxFO0FBQ1pDLFUsc0JBQVksQ0FBRyxDO0FBQ2ZDLFEsb0JBQVUsQ0FBRyxDO0FBQ2JDLFEsb0JBQVUsQ0FBRyIsImZpbGUiOiJhcHAud3hhIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGRlZmF1bHQge1xuICAgIGNvbmZpZzoge1xuICAgICAgcGFnZXM6IFtdLFxuICAgICAgd2luZG93OiB7XG4gICAgICAgIGJhY2tncm91bmRUZXh0U3R5bGU6ICdkYXJrJyxcbiAgICAgICAgYmFja2dyb3VuZENvbG9yOiAnI2VmZWZlZicsXG4gICAgICAgIG5hdmlnYXRpb25CYXJCYWNrZ3JvdW5kQ29sb3I6ICcjZmZmZmZmJyxcbiAgICAgICAgbmF2aWdhdGlvbkJhclRpdGxlVGV4dDogJ+W+ruS/oeaVsOaNrueuoeWuticsXG4gICAgICAgIG5hdmlnYXRpb25CYXJUZXh0U3R5bGU6ICdibGFjaydcbiAgICAgIH0sXG4gICAgICBuZXR3b3JrVGltZW91dDoge1xuICAgICAgICByZXF1ZXN0OiAxMDAwMFxuICAgICAgfVxuICAgIH0sXG4gICAgZ2xvYmFsRGF0YTogeyB9LFxuICAgIG9uTGF1bmNoICgpIHsgfSxcbiAgICBvblNob3cgKCkgeyB9LFxuICAgIG9uSGlkZSAoKSB7IH1cbiAgfSJdfQ==

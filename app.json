@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/about/index",
-    "pages/home/index"
+    "pages/home/index",
+    "pages/mytree/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -11,6 +12,6 @@
     "navigationBarTextStyle": "black"
   },
   "networkTimeout": {
-    "request": 10000
+    "request": 60000
   }
 }
